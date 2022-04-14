@@ -1,4 +1,4 @@
-package main
+package mojangapi
 
 import (
 	"encoding/json"
@@ -15,7 +15,7 @@ type MinecaftPlayerID struct {
 
 // getPlayerByName() requests the username and uuid of a Minecraft player by sending its name to the MojangAPI.
 // It returns a MinecraftPlayer struct.
-func getUuidByName(playerName string) (string, error) {
+func GetUuidByName(playerName string) (string, error) {
 	resp, err := http.Get("https://api.mojang.com/users/profiles/minecraft/" + playerName)
 	if err != nil {
 		return "", err
@@ -38,10 +38,10 @@ func getUuidByName(playerName string) (string, error) {
 // getPlayerByNameAsync() is the async version of getPlayerByName().
 // Here you need to pass a channel and optionally a bool, that determines wether the channel should be closed (default) after the function finished.
 // Call this function as a Go-Routine and receive the result over your provided channel.
-func getUuidByNameAsync(playerName string, channel chan string, closeChan ...bool) {
+func GetUuidByNameAsync(playerName string, channel chan string, closeChan ...bool) {
 
-	if result, err := getUuidByName(playerName); err != nil {
-		log.Printf("UUID: %v raised exception: %v", playerName, err)
+	if result, err := GetUuidByName(playerName); err != nil {
+		log.Printf("Player: %v raised exception: %v", playerName, err)
 
 	} else {
 		channel <- result

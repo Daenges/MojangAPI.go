@@ -1,4 +1,4 @@
-package main
+package mojangapi
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func getPlayerNameByUuid(playerUuid string) (string, error) {
+func GetPlayerNameByUuid(playerUuid string) (string, error) {
 	resp, err := http.Get("https://api.mojang.com/user/profiles/" + playerUuid + "/names")
 	if err != nil {
 		return "", err
@@ -37,9 +37,9 @@ func getPlayerNameByUuid(playerUuid string) (string, error) {
 // getPlayerNameByUuidAsync() is the async version of getPlayerNameByUuid().
 // Here you need to pass a channel and optionally a bool, that determines wether the channel should be closed (default) after the function finished.
 // Call this function as a Go-Routine and receive the result over your provided channel.
-func getPlayerNameByUuidAsync(playerUuid string, channel chan *string, closeChan ...bool) {
+func GetPlayerNameByUuidAsync(playerUuid string, channel chan *string, closeChan ...bool) {
 
-	if result, err := getPlayerNameByUuid(playerUuid); err != nil {
+	if result, err := GetPlayerNameByUuid(playerUuid); err != nil {
 		log.Printf("UUID: %v raised exception: %v", playerUuid, err)
 
 	} else {

@@ -1,4 +1,4 @@
-package main
+package mojangapi
 
 import (
 	"encoding/base64"
@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// PlayerSkinInfo contains the model type of a player and links to their Skin/Cape Image
 type PlayerSkinInfo struct {
 	LinkCapeImage  string
 	LinkSkinImage  string
@@ -39,7 +40,7 @@ type PlayerSkinJSON struct {
 
 // getPlayerSkinInfoByUuid() returns a struct, containing the Player model type and links to the 2D skin Image/Cape of a player.
 // The actual skin information is Base64 encrypted and part of the profile request. Hence we need two json conversions.
-func getPlayerSkinInfoByUuid(playerUuid string) (*PlayerSkinInfo, error) {
+func GetPlayerSkinInfoByUuid(playerUuid string) (*PlayerSkinInfo, error) {
 	resp, err := http.Get("https://sessionserver.mojang.com/session/minecraft/profile/" + playerUuid)
 	if err != nil {
 		return &PlayerSkinInfo{}, err
@@ -78,9 +79,9 @@ func getPlayerSkinInfoByUuid(playerUuid string) (*PlayerSkinInfo, error) {
 // getPlayerSkinInfoByUuidAsync() is the async version of getPlayerSkinInfoByUuid().
 // Here you need to pass a channel and optionally a bool, that determines wether the channel should be closed (default) after the function finished.
 // Call this function as a Go-Routine and receive the result over your provided channel.
-func getPlayerSkinInfoByUuidAsync(playerUuid string, channel chan *PlayerSkinInfo, closeChan ...bool) {
+func GetPlayerSkinInfoByUuidAsync(playerUuid string, channel chan *PlayerSkinInfo, closeChan ...bool) {
 
-	if result, err := getPlayerSkinInfoByUuid(playerUuid); err != nil {
+	if result, err := GetPlayerSkinInfoByUuid(playerUuid); err != nil {
 		log.Printf("UUID: %v raised exception: %v", playerUuid, err)
 
 	} else {
